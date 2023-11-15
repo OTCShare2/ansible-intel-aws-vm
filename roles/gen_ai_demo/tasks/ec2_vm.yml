@@ -1,0 +1,37 @@
+- community.general.terraform:
+    project_path: '{{ terraform_module_download_path }}'
+    state: '{{ gen_ai_demo_state }}'
+    force_init: true
+    complex_vars: true
+    variables:
+      instance_type: '{{ type_of_instance }}'
+      availability_zone: '{{ availability_zone_name }}'
+      ami: '{{ ami_id }}'
+      user_data: '{{ cloud_init_data }}'
+      root_block_device: 
+        - volume_size: '{{ size_of_volume }}'
+      tags: 
+        "Name": "my-test-vm-{{ random_id }}"       # check on dynamic variable from terraform script
+        "Owner": "OwnerName-{{ random_id }}"       # check on dynamic variable from terraform script
+        "Duration": "{{ duration_count_tag }}"
+  register: gen_ai_demo_output
+
+- debug:
+    var: gen_ai_demo_output
+
+- set_fact:
+    primary_net_interface_id: "{{ gen_ai_demo_output.outputs.primary_network_interface_id.value }}"
+  when: gen_ai_demo_state == 'present'
+
+- amazon.aws.ec2_instance_info:
+    instance_ids: "{{ gen_ai_demo_output.outputs.id.value }}"
+  register: ec2_info
+  when: gen_ai_demo_state == 'present'
+
+- set_fact:
+    default_security_group_id: "{{ ec2_info['instances'][0]['security_groups'][0]['group_id'] }}"
+  when: gen_ai_demo_state == 'present'
+
+- debug:
+    var: default_security_group_id
+  when: gen_ai_demo_state == 'present'

@@ -1,0 +1,8 @@
+---
+- name: Clone a github repository
+  git:
+    repo: '{{ terraform_source }}'
+    dest: '{{ terraform_module_download_path }}'
+    clone: yes
+    update: yes
+    version: main
