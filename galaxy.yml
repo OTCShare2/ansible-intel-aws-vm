@@ -1,0 +1,12 @@
+namespace: intel
+name: ansible_intel_aws_mysql
+version: 1.0.0
+readme: README.md
+authors:
+  - Akhil D <akhil.d@intel.com>
+description: This module will create new Amazon RDS instance for MySQL, The instance is pre-configured with parameters within the database parameter group that is optimized for Intel architecture
+tags:
+  - ansible
+  - aws
+  - mysql
+repository: 'https://github.com/intel/terraform-intel-aws-mysql' # TODO: change name repo
