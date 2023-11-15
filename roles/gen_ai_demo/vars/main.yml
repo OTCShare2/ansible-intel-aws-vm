@@ -1,5 +1,5 @@
 ---
-terraform_module_download_path: '/home/{{ansible_env.USER}}/{{role_name}}/terraform/aws_vm/'
+vm_tf_module_download_path: '/home/{{ansible_env.USER}}/{{role_name}}/terraform/aws_vm/'
 cloud_init_config_path: examples/gen-ai-demo/
 ansible_python_interpreter: /usr/bin/python3
 # AMI

@@ -1,8 +1,8 @@
 ---
-- name: Clone a github repository
+- name: Clone a github repository {{ vm_tf_source|basename }}
   git:
-    repo: '{{ terraform_source }}'
-    dest: '{{ terraform_module_download_path }}'
+    repo: '{{ vm_tf_source }}'
+    dest: '{{ vm_tf_module_download_path }}'
     clone: yes
     update: yes
     version: main

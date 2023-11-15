@@ -1,5 +1,5 @@
 - community.general.terraform:
-    project_path: '{{ terraform_module_download_path }}'
+    project_path: '{{ vm_tf_module_download_path }}'
     state: '{{ gen_ai_demo_state }}'
     force_init: true
     complex_vars: true

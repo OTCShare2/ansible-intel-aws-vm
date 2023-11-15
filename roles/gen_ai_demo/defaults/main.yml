@@ -1,3 +1,3 @@
 ---
 # defaults file for gen_ai_demo
-terraform_source: https://github.com/intel/terraform-intel-aws-vm.git
+vm_tf_source: https://github.com/intel/terraform-intel-aws-vm.git
