@@ -27,7 +27,7 @@
   community.crypto.openssl_privatekey:
     type: '{{ private_key_type }}'
     size: '{{ private_key_size }}'
-    path: '{{ TLS_privatekey_file_path }}'
+    path: '{{ tls_privatekey_file_path }}'
     force: true
     return_content: true
     state: present
@@ -40,7 +40,7 @@
   community.crypto.openssl_publickey:
     force: true
     format: "OpenSSH"
-    path: '{{ TLS_publickey_file_path }}'
+    path: '{{ tls_publickey_file_path }}'
     privatekey_content: "{{ private_openssh_key }}"
     return_content: true
   register: openssh_public_key                   #publickey

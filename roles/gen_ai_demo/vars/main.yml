@@ -17,8 +17,8 @@ directory_keyfiles: /home/{{ansible_env.USER}}/key_files
 
 random_id_length: 5
 
-TLS_privatekey_file_path: /home/{{ansible_env.USER}}/key_files/private_key.pem
-TLS_publickey_file_path: /home/{{ansible_env.USER}}/key_files/public_key.pem
+tls_privatekey_file_path: /home/{{ansible_env.USER}}/key_files/private_key.pem
+tls_publickey_file_path: /home/{{ansible_env.USER}}/key_files/public_key.pem
 
 security_group_name: ssh_security_group
 default_security_group_rules:
