@@ -1,0 +1,8 @@
+---
+- name: Clone a github repository {{ vm_tf_source|basename }}
+  git:
+    repo: '{{ vm_tf_source }}'
+    dest: '{{ vm_tf_module_download_path }}'
+    clone: yes
+    update: yes
+    version: main

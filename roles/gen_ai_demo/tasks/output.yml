@@ -8,7 +8,7 @@
     msg: "gen_ai_demo instance got an error"
   when: gen_ai_demo_output.outputs | length == 0 
 
-- name: Displaying mysql output
+- name: Displaying vm output
   ansible.builtin.debug:
     msg:
     - "instance_id: {{ gen_ai_demo_instance.id.value }}"

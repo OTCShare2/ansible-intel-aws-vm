@@ -6,6 +6,7 @@
     variables:
       instance_type: '{{ type_of_instance }}'
       availability_zone: '{{ availability_zone_name }}'
+      key_name: '{{ keypair_name }}'
       ami: '{{ ami_id }}'
       user_data: '{{ cloud_init_data }}'
       root_block_device: 
@@ -21,6 +22,7 @@
 
 - set_fact:
     primary_net_interface_id: "{{ gen_ai_demo_output.outputs.primary_network_interface_id.value }}"
+    instance_id: "{{ gen_ai_demo_output.outputs.id.value }}"
   when: gen_ai_demo_state == 'present'
 
 - amazon.aws.ec2_instance_info:

@@ -1,22 +1,9 @@
 ---
-- name: Gather information about ec2 AMIs
-  amazon.aws.ec2_ami_info:
-    owners: '{{ aws_ami_owner }}'
-    filters:
-      name: "{{ aws_ami_value }}"
-      virtualization-type: "{{ virtualization_value }}"
-  register: ami_info_output
-  when: gen_ai_demo_state == 'present' and ec2_update == false
-
-- set_fact:
-    ami_id: '{{ ami_info_output["images"][0]["image_id"] }}'
-  when: gen_ai_demo_state == 'present' and ec2_update == false
-
 - name: Create random string
   set_fact:
     random_id: "{{ lookup('community.general.random_string', length=12, min_special=0,
     special=false, lower=false, upper=false) }}"
-  when: gen_ai_demo_state == 'present' and ec2_update == false
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_update == false
 
 - debug:
     var: random_id
@@ -26,7 +13,7 @@
     path: "{{directory_keyfiles}}"
     state: directory
     mode: '0777'
-  when: gen_ai_demo_state == 'present' and ec2_update == false
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_update == false
 
 - name: Generate OpenSSL private keys
   community.crypto.openssl_privatekey:
@@ -37,11 +24,11 @@
     return_content: true
     state: present
   register: openssh_key
-  when: gen_ai_demo_state == 'present' and ec2_update == false
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_update == false
 
 - set_fact:
     private_openssh_key: "{{ openssh_key['privatekey'] }}"
-  when: gen_ai_demo_state == 'present' and ec2_update == false
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_update == false
 
 - name: Generate an OpenSSL public key from private key
   community.crypto.openssl_publickey:
@@ -51,41 +38,37 @@
     privatekey_content: "{{ private_openssh_key }}"
     return_content: true
   register: openssh_public_key                   #publickey
-  when: gen_ai_demo_state == 'present' and ec2_update == false
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_update == false
 
 - set_fact:
     openssh_public_key: "{{ openssh_public_key['publickey'] }}"
-    keypair_name: TF_key-{{ random_id }}
-  when: gen_ai_demo_state == 'present' and ec2_update == false
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_update == false
 
 - name: Print openssh_public_key variable
   ansible.builtin.debug:
     msg: "openssh_public_key: '{{ openssh_public_key }}'"
-  when: gen_ai_demo_state == 'present' and ec2_update == false
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_update == false
 
 - name: Create an AWS key pair
   amazon.aws.ec2_key:
-    name: "{{ keypair_name }}"
-    key_material: "{{ openssh_public_key }}"
-    state: "{{ gen_ai_demo_state }}"
+    name: TF_key-{{ random_id }}                 #compare random_id variable with terraform script
+    key_material: "{{ openssh_public_key }}"     #compare public_key_openssh variable with terraform script
+    state: "{{ ec2_rhel_default_vpc_state }}"
   register: keypair_output
   when: ec2_update == false
 
 - debug:
     var: keypair_output
 
-- name: Creating a file with content
+- name: Creating a file with content             #confirm destination filename from terraform script
   copy:
     dest: '{{ file_name }}'
     mode: '0777'
     content: |
       '{{ private_openssh_key }}'
-  when: gen_ai_demo_state == 'present' and ec2_update == false
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_update == false
 
 - name: Set keypair name
   set_fact:
-    keypair_name: '{{ keypair_output.key.name }}'
-  when: gen_ai_demo_state == 'present' and keypair_output.key is defined
-
-- debug:
-    var: keypair_name
+    keypair_name: "{{  keypair_output.key.name }}"
+  when: ec2_rhel_default_vpc_state == 'present' and keypair_output.key is defined

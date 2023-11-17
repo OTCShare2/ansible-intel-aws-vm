@@ -40,7 +40,7 @@ default_security_group_rules:
     cidr_ip: "0.0.0.0/0"
 
 # ec2_vm.yml vars
-gen_ai_demo_state: absent
+gen_ai_demo_state: present
 type_of_instance: "m7i.4xlarge"
 availability_zone_name: "us-east-2c"
 size_of_volume: 100
