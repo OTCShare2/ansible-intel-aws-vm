@@ -1,2 +1,18 @@
 ---
-# tasks file for amazon_linux_ec2_non_default_vpc
+# tasks file for amazon-linux-ec2-non-default-vpc
+- name: download module
+  ansible.builtin.include_tasks:
+    file: download_tf_module.yml
+- name: ec2 configure
+  ansible.builtin.include_tasks:
+    file: ec2.yml
+- name: network configure
+  ansible.builtin.include_tasks:
+    file: network.yml
+- name: key pair configure
+  ansible.builtin.include_tasks:
+    file: keypair.yml    
+- name: output
+  ansible.builtin.include_tasks:
+    file: output.yml
+  when: ec2_state == "present"    

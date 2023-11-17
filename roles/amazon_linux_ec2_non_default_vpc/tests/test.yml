@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - amazon_linux_ec2_non_default_vpc
+    - amazon-linux-ec2-non-default-vpc

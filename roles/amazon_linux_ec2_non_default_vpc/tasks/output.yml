@@ -1,0 +1,35 @@
+---
+- set_fact:
+    ec2_instance : '{{ ec2_output.outputs }}'
+  when: ec2_output.outputs | length > 0
+
+- name: Validating ec2_output output
+  fail:
+    msg: "ec2_output instance got an error"
+  when: ec2_output.outputs | length == 0 
+
+- name: displaying mysql output
+  ansible.builtin.debug:
+    msg:
+    - "instance_id: {{ ec2_instance.id.value }}"
+    - "instance_arn: {{ ec2_instance.arn.value }}"
+    - "capacity_reservation_specification: {{ ec2_instance.capacity_reservation_specification.value }}"
+    - "instance_state: {{ ec2_instance_state.value }}"
+    - "outpost_arn: {{ ec2_instance.outpost_arn.value }}"
+    - "password_data: {{ ec2_instance.password_data.value }}"
+    - "primary_network_interface_id: {{ ec2_instance.primary_network_interface_id.value }}"
+    - "private_dns: {{ ec2_instance.private_dns.value }}"
+    - "public_dns: {{ ec2_instance.public_dns.value }}"
+    - "public_ip: {{ ec2_instance.public_ip.value }}"
+    - "private_ip: {{ ec2_instance.private_ip.value }}"
+    - "ipv6_addresses: {{ ec2_instance.ipv6_addresses.value }}"
+    - "tags_all: {{ ec2_instance.tags_all.value }}"
+    - "spot_bid_status: {{ ec2_instance.spot_bid_status.value }}"
+    - "spot_request_state: {{ ec2_instance.spot_request_state.value }}"
+    - "spot_instance_id: {{ ec2_instance.spot_instance_id.value }}"
+    #- "iam_role_name: {{ ec2_instance.iam_role_name.value }}"
+    #- "iam_role_arn: {{ ec2_instance.iam_role_arn.value }}"
+    #- "iam_role_unique_id: {{ ec2_instance.iam_role_unique_id.value }}"
+    #- "iam_instance_profile_arn: {{ ec2_instance.iam_instance_profile_arn.value }}"
+    #- "iam_instance_profile_id: {{ ec2_instance.iam_instance_profile_id.value }}"
+    #- "iam_instance_profile_unique: {{ ec2_instance.iam_instance_profile_unique.value }}"  

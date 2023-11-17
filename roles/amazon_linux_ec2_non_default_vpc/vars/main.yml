@@ -1,2 +1,33 @@
 ---
-# vars file for amazon_linux_ec2_non_default_vpc
+# vars file for amazon-linux-ec2-non-default-vpc
+# optional
+region: ap-south-1 # "Target AWS region to deploy workloads in."
+ec2_tf_module_path: '/home/ec2-user/{{ansible_env.USER}}/{{ role_name }}/ansible/vpc'
+
+
+#ec2 creation
+ec2_state: present
+key_name: "TY_key"
+subnet_id: "{{ subnet_info.subnets[0].id }}"
+tags_name:   
+  Name : "my-test-vm-{{ random_id.rid.dec }}"
+  Owner : "OwnerName-{{ random_id.rid.dec }}"
+  Duration : "2"
+  
+#keypair
+private_key_type: RSA
+private_key_size: 4096  
+file_name: /home/{{ansible_env.USER}}/key_files/tfkey
+directory_keyfiles: /home/{{ansible_env.USER}}/key_files
+
+random_id_length: 12
+
+TLS_privatekey_file_path: /home/{{ansible_env.USER}}/key_files/private_key.pem
+TLS_publickey_file_path: /home/{{ansible_env.USER}}/key_files/public_key.pem
+#network 
+network_state: present
+vpc_id: "vpc-091a18706e91c1f55"
+cidr_ip : "10.0.0.0/16"
+
+
+
