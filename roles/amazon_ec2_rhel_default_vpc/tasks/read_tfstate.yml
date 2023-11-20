@@ -42,8 +42,11 @@
 - set_fact:
     keypair_name: "{{ ec2_instance['key_name'] }}"
     ami_id: "{{ ec2_instance['image_id'] }}"
-    ec2_update: true
   when: ec2_instance | length > 0
+
+- set_fact:
+    ec2_update: true
+  when: ec2_rhel_default_vpc_state == 'present' and ec2_instance | length > 0
 
 - ansible.builtin.debug:
     msg:
