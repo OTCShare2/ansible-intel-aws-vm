@@ -1,7 +1,8 @@
+---
 - name: Clone a github repository {{ ec2_tf_source|basename }}
-  ansible.builtin.git:
+  git:
     repo: '{{ ec2_tf_source }}'
-    dest: '{{ ec2_tf_module_path }}'
+    dest: '{{ ec2_tf_module_download_path }}'
     clone: yes
     update: yes
     version: main

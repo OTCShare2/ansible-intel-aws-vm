@@ -1,14 +1,20 @@
 ---
 - name: create random string
-  ansible.builtin.debug:
   set_fact:
     random_id: "{{ lookup('community.general.random_string', length=12, min_special=0, special=false, lower=false, upper=false) }}"
+  when: ec2_state == 'present' and ec2_update == false
 - debug:
     var: random_id
 
-- name: tls private key
+- name: Create a directory for storing public and private key files
+  ansible.builtin.file:
+    path: "{{directory_keyfiles}}"
+    state: directory
+    mode: '0777'
+  when: ec2_state == 'present' and ec2_update == false   
+
+- name: Generate openssl private key
   community.crypto.openssl_privatekey:
-  variables:
     type: '{{ private_key_type }}'
     size: '{{ private_key_size }}'
     path: '{{ TLS_privatekey_file_path }}'
@@ -16,9 +22,10 @@
     return_content: true
     state: present
   register: openssh_key
-
+  when: ec2_state == 'present' and ec2_update == false
 - set_fact:
     private_openssh_key: "{{ openssh_key['privatekey'] }}"
+  when: ec2_state == 'present' and ec2_update == false  
 
 - name: Generate an OpenSSL public key from private key
   community.crypto.openssl_publickey:
@@ -27,21 +34,27 @@
     path: '{{ TLS_publickey_file_path }}'
     privatekey_content: "{{ private_openssh_key }}"
     return_content: true
-  register: openssh_public_key                   
-
+  register: openssh_public_key    
+  when: ec2_state == 'present' and ec2_update == false               
 - set_fact:
     openssh_public_key: "{{ openssh_public_key['publickey'] }}"
+  when: ec2_state == 'present' and ec2_update == false  
 
 - name: Print openssh_public_key variable
   ansible.builtin.debug:
     msg: "openssh_public_key: '{{ openssh_public_key }}'"
+  when: ec2_state == 'present' and ec2_update == false  
+
+- set_fact:
+    keypair_name: TF_key-{{ random_id }} 
 
 - name: Create an AWS key pair
   amazon.aws.ec2_key:
-    name: TF_key-{{ random_id }}                 
+    name: "{{ keypair_name }}"                
     key_material: "{{ openssh_public_key }}"    
     state: present
   register: keypair_output
+  when: ec2_update == false
 
 - debug:
     var: keypair_output
@@ -52,6 +65,12 @@
     mode: '0777'
     content: |
       '{{ private_openssh_key }}'
+  when: ec2_state == 'present' and ec2_update == false
+
+- name: Set keypair name
+  set_fact:
+    keypair_name: "{{  keypair_output.key.name }}"
+  when: ec2_state == 'present' and keypair_output.key is defined    
 
 
 

@@ -1,13 +1,13 @@
 ---
 - name: ec2 creation
   community.general.terraform:
-    project_path: '{{ ec2_tf_module_path }}'
+    project_path: '{{ ec2_tf_module_download_path }}'
     state: '{{ ec2_state }}'
     force_init: true 
     complex_vars: true 
-    varaiables:
-      key_name: '{{ key_name }}'
-      subnet_id: '{{ subnet_id }}'
+    variables:
+      key_name: '{{ keypair_name }}'
+      subnet_id: '{{ subnet_ids[0] }}'
       tags:
         "Name": "my-test-vm-{{ random_id }}"       
         "Owner": "OwnerName-{{ random_id }}"       
