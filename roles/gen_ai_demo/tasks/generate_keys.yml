@@ -72,6 +72,7 @@
     key_material: "{{ openssh_public_key }}"
     state: "{{ gen_ai_demo_state }}"
   register: keypair_output
+  when: ec2_update == false
 
 - debug:
     var: keypair_output
