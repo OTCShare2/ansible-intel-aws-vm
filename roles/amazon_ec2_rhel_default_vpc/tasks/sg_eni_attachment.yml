@@ -1,0 +1,31 @@
+---
+- name: security group to configure ports for ssh and provide security group rules
+  amazon.aws.ec2_security_group:
+    name: '{{ security_group_name }}-{{ instance_id }}'
+    description: "security group to configure ports for ssh"
+    rules: "{{ security_group_rules }}"
+    state: '{{ ec2_rhel_default_vpc_state }}'
+  register: security_group_output
+
+- name: Print security group returned information
+  ansible.builtin.debug:
+    msg: "{{ security_group_output }}"
+
+- set_fact:
+    security_group_id: "{{ security_group_output['group_id'] }}"
+  when: ec2_rhel_default_vpc_state == 'present'
+
+# count parameter?
+- name: Attach security group to elastic network interface(ENI)
+  amazon.aws.ec2_eni:
+    eni_id: "{{ primary_net_interface_id }}"                     # check on dynamic eni_id variable from terraform script
+    security_groups: 
+      - "{{ security_group_id }}"
+      - "{{ default_security_group_id }}"
+    state: '{{ ec2_rhel_default_vpc_state }}'
+  register: sg_eni_attach_output
+  when: ec2_rhel_default_vpc_state == 'present'
+
+- name: Print security group to elastic network interface(ENI) attachment returned information
+  ansible.builtin.debug:
+    msg: "{{ sg_eni_attach_output }}"

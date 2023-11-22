@@ -1,2 +1,27 @@
 ---
 # vars file for amazon_ec2_rhel_default_vpc
+vm_tf_module_download_path: '/home/{{ansible_env.USER}}/{{role_name}}/terraform/aws_vm/'
+ansible_python_interpreter: /usr/bin/python3
+
+private_key_type: RSA
+private_key_size: 4096
+
+file_name: /home/{{ansible_env.USER}}/key_files/tfkey
+directory_keyfiles: /home/{{ansible_env.USER}}/key_files
+
+random_id_length: 5
+
+tls_privatekey_file_path: /home/{{ansible_env.USER}}/key_files/private_key.pem
+tls_publickey_file_path: /home/{{ansible_env.USER}}/key_files/public_key.pem
+
+security_group_name: ssh_security_group
+security_group_rules:
+  - from_port: 22
+    to_port: 22
+    proto: "tcp"
+    cidr_ip: "0.0.0.0/0"
+
+# ec2_vm.yml vars
+ec2_rhel_default_vpc_state: present
+ami: "ami-0931978297f275f71"
+duration_count_tag: 2

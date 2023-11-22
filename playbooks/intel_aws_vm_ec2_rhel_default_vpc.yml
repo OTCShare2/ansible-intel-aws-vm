@@ -1,0 +1,9 @@
+---
+- name: Run amazon_ec2_rhel_default_vpc role
+  hosts: localhost
+  tasks:
+    - name: Running a role Amazon EC2 rhel default vpc
+      ansible.builtin.import_role:
+        name: amazon_ec2_rhel_default_vpc
+      vars:
+        ec2_rhel_default_vpc_state: present

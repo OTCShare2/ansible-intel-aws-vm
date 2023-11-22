@@ -1,2 +1,30 @@
 ---
-# tasks file for gen_ai_demo
+- name: Clone a github repository
+  ansible.builtin.include_tasks:
+    file: download_tf_module.yml
+  when: gen_ai_demo_state == 'present'
+
+- name: Read TF state
+  ansible.builtin.include_tasks:
+    file: read_tfstate.yml
+
+- name: Read cloud_init config file
+  ansible.builtin.include_tasks:
+    file: cloud_init_config.yml
+
+- name: Generate OpenSSH keys
+  ansible.builtin.include_tasks:
+    file: generate_keys.yml
+
+- name: Running ec2_vm
+  ansible.builtin.include_tasks:
+    file: ec2_vm.yml
+
+- name: Create SG and attach to elastic network interface(ENI)
+  ansible.builtin.include_tasks:
+    file: sg_eni_attachment.yml
+
+- name: Gen ai demo output
+  ansible.builtin.include_tasks:
+    file: output.yml
+  when: gen_ai_demo_state == 'present'

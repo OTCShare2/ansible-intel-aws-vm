@@ -1,0 +1,9 @@
+---
+- name: Run gen_ai_demo role
+  hosts: localhost
+  tasks:
+    - name: Running a role gen ai demo
+      ansible.builtin.import_role:
+        name: gen_ai_demo
+      vars:
+        gen_ai_demo_state: present

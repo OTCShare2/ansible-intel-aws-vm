@@ -3,7 +3,7 @@
     terraform_source: https://github.com/intel/terraform-intel-aws-vm.git
   tasks:
     - set_fact:
-        terraform_module_download_path: '/home/{{ansible_env.USER}}/examples/terraform/main/'
+        terraform_module_download_path: '/home/{{ansible_env.USER}}/terraform/main/intel_aws_vm/'
 
     - name: Clone a github repository
       git:
@@ -13,7 +13,7 @@
         update: yes
         version: main
 
-    - name: AWS RDS MySQL Module
+    - name: AWS VM Module
       community.general.terraform:
         project_path: '{{ terraform_module_download_path }}'
         state: present
@@ -21,6 +21,8 @@
         complex_vars: true
         # for additional variables
         # https://github.com/intel/terraform-intel-aws-vm/blob/main/variables.tf
+        variables:
+          name: main-playbook-test
       register: vm_output
 
     - debug:

@@ -1,2 +1,11 @@
 ---
 # defaults file for gen_ai_demo
+tags: []
+ec2_update: false
+instance_id: ''
+random_id: ''
+keypair_name: ''
+ec2_instance: ''
+ec2_info:
+  instances: []
+vm_tf_source: https://github.com/intel/terraform-intel-aws-vm.git

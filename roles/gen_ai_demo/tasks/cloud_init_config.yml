@@ -1,0 +1,11 @@
+---
+- name: Slurp the cloud_init config file
+  ansible.builtin.slurp:
+    src: '{{ vm_tf_module_download_path }}/{{ cloud_init_config_path }}/cloud_init.yml'
+  register: cloud_init_output
+
+- set_fact:
+    cloud_init_data: "{{ cloud_init_output['content'] | b64decode }}"
+
+- ansible.builtin.debug: 
+    var: cloud_init_data
