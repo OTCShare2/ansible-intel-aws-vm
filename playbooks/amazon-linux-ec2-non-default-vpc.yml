@@ -1,0 +1,10 @@
+---
+- name: playbook using amazon linux ec2
+  hosts: localhost
+  tasks:
+    - name: running a role amazon linux ec2 non default vpc
+      ansible.builtin.import_role:
+        name: amazon-linux-ec2-non-default-vpc
+      vars:
+        ec2_state: present
+       
