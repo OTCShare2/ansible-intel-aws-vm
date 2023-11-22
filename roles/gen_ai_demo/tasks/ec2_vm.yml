@@ -4,16 +4,16 @@
     force_init: true
     complex_vars: true
     variables:
-      instance_type: '{{ type_of_instance }}'
-      availability_zone: '{{ availability_zone_name }}'
+      instance_type: '{{ instance_type }}'
+      availability_zone: '{{ availability_zone }}'
       key_name: '{{ keypair_name }}'
       ami: '{{ ami_id }}'
       user_data: '{{ cloud_init_data }}'
       root_block_device: 
-        - volume_size: '{{ size_of_volume }}'
+        - volume_size: '{{ volume_size }}'
       tags: 
-        "Name": "my-test-vm-{{ random_id }}"       # check on dynamic variable from terraform script
-        "Owner": "OwnerName-{{ random_id }}"       # check on dynamic variable from terraform script
+        "Name": "my-test-vm-{{ random_id }}"
+        "Owner": "OwnerName-{{ random_id }}"
         "Duration": "{{ duration_count_tag }}"
   register: gen_ai_demo_output
 
