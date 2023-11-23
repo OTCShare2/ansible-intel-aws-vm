@@ -1,9 +1,8 @@
 ---
 # vars file for amazon-linux-ec2-non-default-vpc
 # optional
-region: ap-south-1 # "Target AWS region to deploy workloads in."
-ec2_tf_module_path: '/home/ec2-user/{{ansible_env.USER}}/{{ role_name }}/ansible/vpc'
-
+ec2_tf_module_download_path: '/home/{{ansible_env.USER}}/{{role_name}}/terraform/ec2_vpc/'
+ansible_python_interpreter: /usr/bin/python3
 
 #ec2 creation
 ec2_state: present
