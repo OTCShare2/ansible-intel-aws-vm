@@ -31,8 +31,7 @@ security_group_rules:
     to_port: 22
     proto: "tcp"
     cidr_ip: "0.0.0.0/0"
-#network 
-network_state: present
+ 
 vpc_id: "vpc-091a18706e91c1f55"
 cidr_ip : "10.0.0.0/16"
 
