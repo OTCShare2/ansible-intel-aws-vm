@@ -4,7 +4,7 @@
 
 # Intel® Optimized Cloud Modules for Ansible
 
-© Copyright 2022, Intel Corporation
+© Copyright 2023, Intel Corporation
 
 ## Ansible Intel AWS VM - Linux VM in Non Default VPC
 
