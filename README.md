@@ -4,22 +4,45 @@
 
 # Intel® Optimized Cloud Modules for Ansible
 
-© Copyright 2022, Intel Corporation
+© Copyright 2023, Intel Corporation
 
-## Ansible Intel AWS VM - Red Hat RHEL VM in Default VPC
+## AWS VM module
 
-This example creates an AWS Red Hat Enterprise Linux (RHEL) EC2 instance on a 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) in the default VPC. It is configured to create the EC2 instance in US-East-1 region. The region is provided in variables.tf in this example folder.
+Configuration in this directory creates an AWS VM (EC2 Instance).   The instance is created on an 3rd Generation Intel® Xeon® Scalable Processor (IceLake) by default.  
 
-This example also creates an EC2 key pair. It associates the public key with the EC2 instance. The private key is created in the local system where terraform apply is done. It also creates a new scurity group to open up the SSH port 22 to a specific IP CIDR block. This example requires RHEL SSM Parameter name for the ami_ssm_parameter in the variables file. More information can be found on [Red Hat Enterprise Linux Images Available on Amazon Web Services Documentation](<https://access.redhat.com/solutions/15356>)
+### Explained Ansible AWS VM collection
+This collection included 3 roles and 4 playbooks.
 
-In this example, the tags Name, Owner and Duration are added to the EC2 instance when it is created.
+**Role**:- Ansible roles are a way to reuse and organize your Ansible code. They are self-contained units that contain all the files and configuration needed to automate a specific task.
+Roles are defined using a directory structure with specific directories for tasks, variables, files, templates, and other artifacts. This structure makes it easy to find and reuse code, and it also makes it easy to extend behaviour of roles.
 
-## Architecture Diagram
-<p align="center">
-  <img src="https://github.com/intel/terraform-intel-aws-vm/blob/main/images/amazon-ec2-rhel-default-vpc.png?raw=true" alt="amazon-ec2-rhel-default-vpc" width="750"/>
-</p>
+To use a role in an Ansible playbook, you simply need to list it in the roles section of the playbook. Ansible will then automatically load the role and execute its tasks.
 
-## Installation of `amazon_ec2_rhel_default_vpc` role
+For this module, There are 3 roles.
+1. <a name="amazon_ec2_rhel_default_vpc"> amazon_ec2_rhel_default_vpc</a> - It creates an AWS Red Hat Enterprise Linux (RHEL) EC2 instance on a 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) in the default VPC
+2. <a name="amazon_linux_ec2_non_default_vpc"> amazon_linux_ec2_non_default_vpc</a> creates an AWS EC2 instance on 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) on Linux Operating System in a non-default VPC
+3. <a name="gen_ai_demo"> gen_ai_demo</a> It creates an Amazon M7i EC2 Instance with 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) & Intel® Cloud Optimized Recipe for FastChat and Stable Diffusion
+
+**
+****Playbook**:- An Ansible playbook is a YAML file that describes the tasks, are composed of a series of plays, which are groups of tasks that are executed in a specific order. Each play defines a set of tasks that should be executed on a specific group of hosts.
+         Playbooks can also include variables, which can be used to store data that is used by the tasks. This makes it easy to reuse playbooks for different environments and configurations.
+         for this module. 
+For this module, There are 4 playbooks, Where
+1. Playbook **intel_aws_vm.yml** - Used to creates an AWS VM (EC2 Instance), it uses Terraform module **terraform-intel-aws-vm** and being called by Ansible module community.general.terraform
+2. Playbook **intel_aws_vm_ec2_rhel_default_vpc.yml** - It executes role called [amazon_ec2_rhel_default_vpc](#amazon_ec2_rhel_default_vpc)
+3. Playbook **intel_aws_vm_linux_ec2_non_default_vpc.yml** - It executes role called [amazon_linux_ec2_non_default_vpc](#amazon_linux_ec2_non_default_vpc)
+4. Playbook **intel_aws_vm_gen_ai_demo** - It executes role called [gen_ai_demo](#gen_ai_demo)
+
+## TODO 
+```bash
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── galaxy.yml
+├── playbooks
+
+```
+
+## Installation of collection
 
 ### Below are ways to `How to install and use it`
 
@@ -43,60 +66,107 @@ In this example, the tags Name, Owner and Duration are added to the EC2 instance
        git clone https://github.com/OTCShare2/ansible-intel-aws-vm.git
        cd ansible-intel-aws-vm
        cp -r role/amazon_ec2_rhel_default_vpc /<your project path>/
-      
+       ```
 
+## Authenticate AWS 
+To authenticate AWS API, User needs to export below environment variable
+```bash
+export AWS_ACCESS_KEY_ID=<aws_access_key_id>
+export AWS_SECRET_ACCESS_KEY=<aws_secret_access_key>
+export AWS_REGION=<aws_region>
+```
 
 ## Usage
-Use playbook to run amazon_ec2_rhel_default_vpc role as below
-```yaml
+Use [playbook](playbooks/intel_aws_vm.yml) to execute Terraform module [terraform-intel-aws-vm](<https://github.com/intel/terraform-intel-aws-vm>) using Ansible module [community.general.terraform](<https://docs.ansible.com/ansible/latest/collections/community/general/terraform_module.html>) as below
+
+```ansible
 ---
-- name: Run amazon_ec2_rhel_default_vpc role
-  hosts: localhost
+- hosts: localhost
+  vars:
+    terraform_source: https://github.com/intel/terraform-intel-aws-vm.git
   tasks:
-    - name: Running a role Amazon EC2 rhel default vpc
-      ansible.builtin.import_role:
-        name: amazon_ec2_rhel_default_vpc
-      vars:
-        ec2_rhel_default_vpc_state: present
+    - set_fact:
+        terraform_module_download_path: '/home/{{ansible_env.USER}}/terraform/main/intel_aws_vm/'
+
+    - name: Clone a github repository
+      git:
+        repo: '{{ terraform_source }}'
+        dest: '{{ terraform_module_download_path }}'
+        clone: yes
+        update: yes
+        version: main
+
+    - name: AWS VM Module
+      community.general.terraform:
+        project_path: '{{ terraform_module_download_path }}'
+        state: present
+        force_init: true
+        complex_vars: true
+        # for additional variables
+        # https://github.com/intel/terraform-intel-aws-vm/blob/main/variables.tf
+        variables:
+          name: main-playbook-test
+      register: vm_output
+
+    - debug:
+        var: vm_output
 ```
 Use below Command:
 ```commandline
-ansible-playbook intel_aws_vm_ec2_rhel_default_vpc.yml
+ansible-playbook intel_aws_vm.yml
 ```
 
 ## Run Ansible with Different State
+#### State - planned (terraform plan)
+```yaml
+- name: AWS VM Module
+  community.general.terraform:
+    project_path: '{{ terraform_module_download_path }}'
+    state: planned
+    force_init: true
+    complex_vars: true
+    # for additional variables
+    # https://github.com/intel/terraform-intel-aws-vm/blob/main/variables.tf
+    variables:
+      name: <vm-name>
+```
+
 #### State - present (terraform apply)
 ```yaml
-- name: Run amazon_ec2_rhel_default_vpc role
-  hosts: localhost
-  tasks:
-    - name: Running a role Amazon EC2 rhel default vpc
-      ansible.builtin.import_role:
-        name: amazon_ec2_rhel_default_vpc
-      vars:
-        ec2_rhel_default_vpc_state: present
+- name: AWS VM Module
+  community.general.terraform:
+    project_path: '{{ terraform_module_download_path }}'
+    state: present
+    force_init: true
+    complex_vars: true
+    # for additional variables
+    # https://github.com/intel/terraform-intel-aws-vm/blob/main/variables.tf
+    variables:
+      name: <vm-name>
 ```
-Use below Command:
-```commandline
-ansible-playbook intel_aws_vm_ec2_rhel_default_vpc.yml
-```
+
 
 #### State - absent (terraform destroy)
 ```yaml
-- name: Run amazon_ec2_rhel_default_vpc role
-  hosts: localhost
-  tasks:
-    - name: Running a role Amazon EC2 rhel default vpc
-      ansible.builtin.import_role:
-        name: amazon_ec2_rhel_default_vpc
-      vars:
-        ec2_rhel_default_vpc_state: absent
+- name: AWS VM Module
+  community.general.terraform:
+    project_path: '{{ terraform_module_download_path }}'
+    state: absent
+    force_init: true
+    complex_vars: true
+    # for additional variables
+    # https://github.com/intel/terraform-intel-aws-vm/blob/main/variables.tf
+    variables:
+      name: <vm-name>
 ```
-Use below Command:
-```commandline
-ansible-playbook intel_aws_vm_ec2_rhel_default_vpc.yml
-```
-Note: **It deletes ec2 vm instance, security group and key pair**.
+## See roles folder for complete examples
+
+| Role Name                                                                                                                              |
+|----------------------------------------------------------------------------------------------------------------------------------------|
+| [amazon_ec2_rhel_default_vpc](https://github.com/OTCShare2/ansible-intel-aws-vm/tree/main/roles/amazon_ec2_rhel_default_vpc)           |
+| [amazon_linux_ec2_non_default_vpc](https://github.com/OTCShare2/ansible-intel-aws-vm/tree/main/roles/amazon_linux_ec2_non_default_vpc) |
+| [gen_ai_demo](https://github.com/OTCShare2/ansible-intel-aws-vm/tree/main/roles/gen_ai_demo)                                           |
+
 
 Requirements
 ------------
@@ -112,78 +182,6 @@ Requirements
 | <a name="requirement_cryptography"></a> [cryptography](#requirement\_cryptography)       | ~>41.0.5 |
 
 Note: Above role requires `Terraform` as we are executing terraform module [terraform-intel-aws-vm](<https://github.com/intel/terraform-intel-aws-vm/tree/main>) using Ansible module called [community.general.terraform](<https://docs.ansible.com/ansible/latest/collections/community/general/terraform_module.html>)
-
-### Terraform Modules
-| Name                                                                                  |
-|---------------------------------------------------------------------------------------|
-| [terraform-intel-aws-vm](<https://github.com/intel/terraform-intel-aws-vm/blob/main>) |
-
-# Ansible
-## Module State Inputs
-
-| Name                                                                                                                  | Description                                                                                | Type     | Default   | Required |
-|-----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|----------|-----------|:--------:|
-| <a name="input_ec2_rhel_default_vpc_state"></a> [ec2_rhel_default_vpc\_state](#input\_auto\_major\_version\_upgrades) | It specifices ec2 state of given stage, choies: "planned", "present" ← (default), "absent" | `string` | `present` | no |
-
-
-## VM Exposed Inputs 
-
-| Name                                                                                            | Description                       | Type     | Default                 | Required |
-|-------------------------------------------------------------------------------------------------|-----------------------------------|----------|-------------------------|:--------:|
-| <a name="input_ami"></a> [ami](#input_ami)                                    | ID of AMI to use for the instance | `string` | `ami-0931978297f275f71` | no |
-| <a name="input_duration_count_tag"></a> [duration_count_tag](#input_duration_count_tag)                                           | Tag: Duration count               | `int`    | `2`                     | no |
-
-## Security group Exposed Inputs
-
-| Name                                                                                               | Description                                                                                                         | Type        | Default                           | Required |
-|----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-------------|-----------------------------------|:--------:|
-| <a name="input_security_group_name"></a> [security_group_name](#input_security_group_name)                      | Security group name is a unique identifier for a security group within a VPC                                        | `string`    | `ssh_security_group` with prefix  | no |
-| <a name="input_security_group_rules"></a> [security_group_rules](#input_security_group_rules)                            | Security group rules are a set of firewall rules that control the inbound and outbound traffic for an EC2 instance. | `list(map)` | `[{"from_port": 22, "to_port": 22, "proto": "tcp", "cidr_ip": "0.0.0.0/0"}]`                            | no |
-
-
-## VM Terraform Extended Inputs
- Below Input variables can be used to extend variables in role, Add or update variable in vars/main.yml file
-### Usage
-
-roles/amazon_ec2_rhel_default_vpc/vars/main.yml
-
-```yaml
-availability_zone: "us-east-2c"
-```
-
-roles/amazon_ec2_rhel_default_vpc/tasks/ec2_vm.yml
-```yaml
-# TF module "terraform-intel-aws-vm"
-- name: EC2 rhel vm
-  community.general.terraform:
-    project_path: '{{ vm_tf_module_download_path }}'
-    state: '{{ ec2_rhel_default_vpc_state }}'
-    force_init: true
-    complex_vars: true
-    variables:
-      availability_zone: '{{ availability_zone }}'
-      key_name: '{{ keypair_name }}'
-      ami: '{{ ami }}'
-      tags: 
-        "Name": "my-test-vm-{{ random_id }}"
-        "Owner": "OwnerName-{{ random_id }}"
-        "Duration": "{{ duration_count_tag }}"
-  register: ec2_rhel_vm_output
-```
-
-Use `availability_zone` in playbook 
-```yaml
----
-- name: Run amazon_ec2_rhel_default_vpc role
-  hosts: localhost
-  tasks:
-    - name: Running a role Amazon EC2 rhel default vpc
-      ansible.builtin.import_role:
-        name: amazon_ec2_rhel_default_vpc
-      vars:
-        ec2_rhel_default_vpc_state: present
-        availability_zone: <zone>
-```
 
 ## Inputs
 
