@@ -1,3 +1,4 @@
+---
 - name: subnet to create the EC2 instance
   amazon.aws.ec2_vpc_subnet_info:
     filters:

@@ -8,7 +8,7 @@
 
 - name: Create a directory for storing public and private key files
   ansible.builtin.file:
-    path: "{{directory_keyfiles}}"
+    path: "{{ directory_keyfiles }}"
     state: directory
     mode: '0777'
   when: ec2_state == 'present' and ec2_update == false   

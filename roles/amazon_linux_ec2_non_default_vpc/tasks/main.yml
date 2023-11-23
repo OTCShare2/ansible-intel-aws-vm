@@ -5,7 +5,6 @@
     file: download_tf_module.yml
   when: ec2_state == "present"    
 
-
 - name: Read TF state
   ansible.builtin.include_tasks:
     file: read_tfstate.yml

@@ -19,11 +19,18 @@ private_key_type: RSA
 private_key_size: 4096  
 file_name: /home/{{ansible_env.USER}}/key_files/tfkey
 directory_keyfiles: /home/{{ansible_env.USER}}/key_files
-
 random_id_length: 12
 
 TLS_privatekey_file_path: /home/{{ansible_env.USER}}/key_files/private_key.pem
 TLS_publickey_file_path: /home/{{ansible_env.USER}}/key_files/public_key.pem
+
+# security_group
+security_group_name: ssh_security_group
+security_group_rules:
+  - from_port: 22
+    to_port: 22
+    proto: "tcp"
+    cidr_ip: "0.0.0.0/0"
 #network 
 network_state: present
 vpc_id: "vpc-091a18706e91c1f55"
