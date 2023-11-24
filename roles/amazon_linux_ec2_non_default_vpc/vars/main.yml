@@ -31,8 +31,9 @@ security_group_rules:
     proto: "tcp"
     cidr_ip: "0.0.0.0/0"
  
-vpc_id: "vpc-091a18706e91c1f55"
-cidr_ip : "10.0.0.0/16"
+#network 
+vpc_id: "vpc-0bf95158fd23f4e2e"
+duration_count_tag: 2
 
 
 
