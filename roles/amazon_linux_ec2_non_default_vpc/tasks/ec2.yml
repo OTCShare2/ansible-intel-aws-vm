@@ -18,6 +18,7 @@
     var: ec2_output    
 - set_fact:
     primary_net_interface_id: "{{ ec2_output.outputs.primary_network_interface_id.value }}"
+    instance_id: "{{ ec2_output.outputs.id.value }}"
   when: ec2_state == 'present' 
 
 - amazon.aws.ec2_instance_info:
