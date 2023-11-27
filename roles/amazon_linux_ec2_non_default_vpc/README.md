@@ -179,7 +179,7 @@ Use `duration_count_tag` in playbook
   tasks:
     - name: running a role amazon linux ec2 non default vpc
       ansible.builtin.import_role:
-        name: amazon_linux_ec2_non_default-vpc
+        name: amazon_linux_ec2_non_default_vpc
       vars:
         ec2_state: present
         subnet_id: <subnet-XXXXXXXXX>
