@@ -1,6 +1,4 @@
 ---
-- debug:
-    var: instance_id
 - name: security group to configure ports for ssh and provide security group rules
   amazon.aws.ec2_security_group:
     name: '{{ security_group_name }}-{{ instance_id }}'
