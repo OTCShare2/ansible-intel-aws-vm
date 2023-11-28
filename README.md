@@ -35,10 +35,92 @@ For this module, There are 4 playbooks, Where
 
 ## TODO 
 ```bash
+.
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── galaxy.yml
 ├── playbooks
+│   ├── intel_amazon_linux_ec2_non_default_vpc.yml
+│   ├── intel_aws_vm_ec2_rhel_default_vpc.yml
+│   ├── intel_aws_vm_gen_ai_demo.yml
+│   └── intel_aws_vm.yml
+├── README.md
+├── requirements.txt
+├── requirements.yml
+├── roles
+│   ├── amazon_ec2_rhel_default_vpc
+│   │   ├── defaults
+│   │   │   └── main.yml
+│   │   ├── files
+│   │   ├── handlers
+│   │   │   └── main.yml
+│   │   ├── meta
+│   │   │   └── main.yml
+│   │   ├── README.md
+│   │   ├── tasks
+│   │   │   ├── download_tf_module.yml
+│   │   │   ├── ec2_vm.yml
+│   │   │   ├── generate_keys.yml
+│   │   │   ├── main.yml
+│   │   │   ├── output.yml
+│   │   │   ├── read_tfstate.yml
+│   │   │   └── sg_eni_attachment.yml
+│   │   ├── templates
+│   │   ├── tests
+│   │   │   ├── inventory
+│   │   │   └── test.yml
+│   │   └── vars
+│   │       └── main.yml
+│   ├── amazon_linux_ec2_non_default_vpc
+│   │   ├── defaults
+│   │   │   └── main.yml
+│   │   ├── files
+│   │   ├── handlers
+│   │   │   └── main.yml
+│   │   ├── meta
+│   │   │   └── main.yml
+│   │   ├── README.md
+│   │   ├── tasks
+│   │   │   ├── download_tf_module.yml
+│   │   │   ├── ec2.yml
+│   │   │   ├── keypair.yml
+│   │   │   ├── main.yml
+│   │   │   ├── output.yml
+│   │   │   ├── read_tfstate.yml
+│   │   │   ├── sg.yml
+│   │   │   └── subnet.yml
+│   │   ├── templates
+│   │   ├── tests
+│   │   │   ├── inventory
+│   │   │   └── test.yml
+│   │   └── vars
+│   │       └── main.yml
+│   └── gen_ai_demo
+│       ├── defaults
+│       │   └── main.yml
+│       ├── files
+│       ├── handlers
+│       │   └── main.yml
+│       ├── meta
+│       │   └── main.yml
+│       ├── README.md
+│       ├── tasks
+│       │   ├── cloud_init_config.yml
+│       │   ├── download_tf_module.yml
+│       │   ├── ec2_vm.yml
+│       │   ├── generate_keys.yml
+│       │   ├── main.yml
+│       │   ├── output.yml
+│       │   ├── read_tfstate.yml
+│       │   └── sg_eni_attachment.yml
+│       ├── templates
+│       ├── tests
+│       │   ├── inventory
+│       │   └── test.yml
+│       └── vars
+│           └── main.yml
+└── security.md
+
 
 ```
 
@@ -181,7 +263,14 @@ Requirements
 | <a name="requirement_botocore"></a> [botocore](#requirement\_botocore)               | ~>1.32.0 |
 | <a name="requirement_cryptography"></a> [cryptography](#requirement\_cryptography)       | ~>41.0.5 |
 
-Note: Above role requires `Terraform` as we are executing terraform module [terraform-intel-aws-vm](<https://github.com/intel/terraform-intel-aws-vm/tree/main>) using Ansible module called [community.general.terraform](<https://docs.ansible.com/ansible/latest/collections/community/general/terraform_module.html>)
+Note:
+1. Install requirements using `requirements.txt` and `requirements.yml`, Use below command:
+    ```bash
+    pip3 install -r requirements.txt
+    ansible-galaxy install -r requirements.yml
+    ```
+2. Above role requires `Terraform` as we are executing terraform module [terraform-intel-aws-vm](<https://github.com/intel/terraform-intel-aws-vm/tree/main>) using Ansible module called [community.general.terraform](<https://docs.ansible.com/ansible/latest/collections/community/general/terraform_module.html>)
+
 
 ## Inputs
 
