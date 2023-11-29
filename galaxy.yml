@@ -9,4 +9,4 @@ tags:
   - ansible
   - aws
   - vm
-repository: 'https://github.com/intel/terraform-intel-aws-vm'
+repository: 'https://github.com/OTCShare2/ansible-intel-aws-vm'
