@@ -18,7 +18,7 @@ Roles are defined using a directory structure with specific directories for task
 
 To use a role in an Ansible playbook, you simply need to list it in the roles section of the playbook. Ansible will then automatically load the role and execute its tasks.
 
-For this module, There are 3 roles.
+For this module, there are 3 roles.
 1. <a name="amazon_ec2_rhel_default_vpc"> amazon_ec2_rhel_default_vpc</a> - It creates an AWS Red Hat Enterprise Linux (RHEL) EC2 instance on a 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) in the default VPC
 2. <a name="amazon_linux_ec2_non_default_vpc"> amazon_linux_ec2_non_default_vpc</a> creates an AWS EC2 instance on 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) on Linux Operating System in a non-default VPC
 3. <a name="gen_ai_demo"> gen_ai_demo</a> It creates an Amazon M7i EC2 Instance with 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) & Intel® Cloud Optimized Recipe for FastChat and Stable Diffusion
@@ -26,9 +26,9 @@ For this module, There are 3 roles.
 **
 ****Playbook**:- An Ansible playbook is a YAML file that describes the tasks, are composed of a series of plays, which are groups of tasks that are executed in a specific order. Each play defines a set of tasks that should be executed on a specific group of hosts.
          Playbooks can also include variables, which can be used to store data that is used by the tasks. This makes it easy to reuse playbooks for different environments and configurations.
-         for this module. 
-For this module, There are 4 playbooks, Where
-1. Playbook **intel_aws_vm.yml** - Used to creates an AWS VM (EC2 Instance), it uses Terraform module **terraform-intel-aws-vm** and being called by Ansible module community.general.terraform
+         for this module.
+For this module, there are 4 playbooks:
+1. Playbook **intel_aws_vm.yml** - Used to create an AWS VM (EC2 Instance), it uses Terraform module **terraform-intel-aws-vm** and being called by Ansible module community.general.terraform
 2. Playbook **intel_aws_vm_ec2_rhel_default_vpc.yml** - It executes role called [amazon_ec2_rhel_default_vpc](#amazon_ec2_rhel_default_vpc)
 3. Playbook **intel_aws_vm_linux_ec2_non_default_vpc.yml** - It executes role called [amazon_linux_ec2_non_default_vpc](#amazon_linux_ec2_non_default_vpc)
 4. Playbook **intel_aws_vm_gen_ai_demo** - It executes role called [gen_ai_demo](#gen_ai_demo)
@@ -126,32 +126,32 @@ For this module, There are 4 playbooks, Where
 
 ## Installation of collection
 
-### Below are ways to `How to install and use it`
+### Below are ways to install and use it:
 
-1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection 
+1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection
    from Ansible Galaxy to the default location (as a third-party collection), it is recommended to use the following command:
     ```commandline
         ansible-galaxy  collection install <intel.ansible-intel-aws-vm>
     ```
-   
-2. **Case 2:-** When user's needs can't be met with the default configuration, wants to extend/modify existing configuration and flow, They can install collection using Ansible Galaxy in user's define location
-   Use below approaches
+
+2. **Case 2:-** When user's needs cannot be met with the default configuration, wants to extend/modify existing configuration and flow, they can install collection using Ansible Galaxy in user's define location.
+   Use below approaches:
 
    1.
        ```commandline
        ansible-galaxy  collection install -p <local path> <intel.ansible-intel-aws-vm>
        ```
-       Note: collection will download collection, you can remove as per need
+       Note: collection will download collection, you can remove as per need.
 
-   2. Download source and Copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
+   2. Download source and copy role directory to your Ansible boilerplate  from GitHub (used to extended behavior of role)  
        ```commandline
        git clone https://github.com/OTCShare2/ansible-intel-aws-vm.git
        cd ansible-intel-aws-vm
        cp -r role/amazon_ec2_rhel_default_vpc /<your project path>/
        ```
 
-## Authenticate AWS 
-To authenticate AWS API, User needs to export below environment variable
+## Authenticate AWS
+To authenticate AWS API, user needs to export below environment variable:
 ```bash
 export AWS_ACCESS_KEY_ID=<aws_access_key_id>
 export AWS_SECRET_ACCESS_KEY=<aws_secret_access_key>

@@ -22,24 +22,24 @@ In this example, the tags Name, Owner and Duration are added to the EC2 instance
 
 ## Installation of `amazon_linux_ec2_non_default_vpc` role
 
-### Below are ways to `How to install and use it`
+### Below are ways to install and use it:
 
-1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection 
+1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection
    from Ansible Galaxy to the default location (as a third-party collection), it is recommended to use the following command:
     ```commandline
         ansible-galaxy  collection install <intel.ansible-intel-aws-vm>
     ```
-   
-2. **Case 2:-** When user's needs can't be met with the default configuration, wants to extend/modify existing configuration and flow, They can install collection using Ansible Galaxy in user's define location
-   Use below approaches
+
+2. **Case 2:-** When user's needs cannot be met with the default configuration, wants to extend/modify existing configuration and flow, They can install collection using Ansible Galaxy in user's define location.
+   Use below approaches:
 
    1.
        ```commandline
        ansible-galaxy  collection install -p <local path> <intel.ansible-intel-aws-vm>
        ```
-       Note: collection will download collection, you can remove as per need
+       Note: collection will download collection, you can remove as per need.
 
-   2. Download source and Copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
+   2. Download source and copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
        ```commandline
        git clone https://github.com/OTCShare2/ansible-intel-aws-vm.git
        cd ansible-intel-aws-vm

@@ -8,28 +8,28 @@
 
 ## AWS M7i EC2 Instance with 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) & Intel® Cloud Optimized Recipe for FastChat and Stable Diffusion
 
-This demo will showcase Large Language Model(LLM) CPU inference using 4th Gen Xeon Scalable Processors on AWS using FastChat and Stable Diffusion
+This demo will showcase Large Language Model(LLM) CPU inference using 4th Gen Xeon Scalable Processors on AWS using FastChat and Stable Diffusion.
 
 ## Installation of `gen_ai_demo` role
 
-### Below are ways to `How to install and use it`
+### Below are ways to install and use it:
 
-1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection 
+1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection
    from Ansible Galaxy to the default location (as a third-party collection), it is recommended to use the following command:
     ```commandline
         ansible-galaxy  collection install <intel.ansible-intel-aws-vm>
     ```
-   
-2. **Case 2:-** When user's needs can't be met with the default configuration, wants to extend/modify existing configuration and flow, They can install collection using Ansible Galaxy in user's define location
-   Use below approaches
+
+2. **Case 2:-** When user's needs cannot be met with the default configuration, wants to extend/modify existing configuration and flow, They can install collection using Ansible Galaxy in user's define location.
+   Use below approaches:
 
    1.
        ```commandline
        ansible-galaxy  collection install -p <local path> <intel.ansible-intel-aws-vm>
        ```
-       Note: collection will download collection, you can remove as per need
+       Note: collection will download collection, you can remove as per need.
 
-   2. Download source and Copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
+   2. Download source and copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
        ```commandline
        git clone https://github.com/OTCShare2/ansible-intel-aws-vm.git
        cd ansible-intel-aws-vm
@@ -118,7 +118,7 @@ Note: Above role requires `Terraform` as we are executing terraform module [terr
 | <a name="input_gen_ai_demo_state"></a> [gen_ai_demo\_state](#input\_auto\_major\_version\_upgrades) | It specifices ec2 state of given stage, choies: "planned", "present" ← (default), "absent" | `string` | `present` | no |
 
 
-## VM Exposed Inputs 
+## VM Exposed Inputs
 
 | Name                                                                                            | Description                                 | Type     | Default                | Required |
 |-------------------------------------------------------------------------------------------------|---------------------------------------------|----------|------------------------|:--------:|
@@ -136,7 +136,7 @@ Note: Above role requires `Terraform` as we are executing terraform module [terr
 
 
 ## VM Terraform Extended Inputs
- Below Input variables can be used to extend variables in role, Add or update variable in vars/main.yml file
+ Below input variables can be used to extend variables in role, add or update variable in vars/main.yml file
 ### Usage
 
 roles/gen_ai_demo/vars/main.yml
@@ -160,9 +160,9 @@ roles/gen_ai_demo/tasks/ec2_vm.yml
       key_name: '{{ keypair_name }}'
       ami: '{{ ami_id }}'
       user_data: '{{ cloud_init_data }}'
-      root_block_device: 
+      root_block_device:
         - volume_size: '{{ size_of_volume }}'
-      tags: 
+      tags:
         "Name": "my-test-vm-{{ random_id }}"       
         "Owner": "OwnerName-{{ random_id }}"       
         "Duration": "{{ duration_count_tag }}"
@@ -171,7 +171,7 @@ roles/gen_ai_demo/tasks/ec2_vm.yml
 
 ```
 
-Use `subnet_id` in playbook 
+Use `subnet_id` in playbook
 ```yaml
 ---
 - name: Run gen_ai_demo role
@@ -183,7 +183,7 @@ Use `subnet_id` in playbook
       vars:
         gen_ai_demo_state: present
         subnet_id: <subnet-xxxxxxxxxxxxxxx>
-        
+
 ```
 
 ## Inputs
@@ -270,10 +270,10 @@ Use `subnet_id` in playbook
 | <a name="output_outpost_arn"></a> [outpost\_arn](#output\_outpost\_arn) | The ARN of the Outpost the instance is assigned to |
 | <a name="output_password_data"></a> [password\_data](#output\_password\_data) | Base-64 encoded encrypted password data for the instance. Useful for getting the administrator password for instances running Microsoft Windows. This attribute is only exported if `get_password_data` is true |
 | <a name="output_primary_network_interface_id"></a> [primary\_network\_interface\_id](#output\_primary\_network\_interface\_id) | The ID of the instance's primary network interface |
-| <a name="output_private_dns"></a> [private\_dns](#output\_private\_dns) | The private DNS name assigned to the instance. Can only be used inside the Amazon EC2, and only available if you've enabled DNS hostnames for your VPC |
+| <a name="output_private_dns"></a> [private\_dns](#output\_private\_dns) | The private DNS name assigned to the instance can only be used inside the Amazon EC2, and only available if you've enabled DNS hostnames for your VPC |
 | <a name="output_private_ip"></a> [private\_ip](#output\_private\_ip) | The private IP address assigned to the instance. |
 | <a name="output_public_dns"></a> [public\_dns](#output\_public\_dns) | The public DNS name assigned to the instance. For EC2-VPC, this is only available if you've enabled DNS hostnames for your VPC |
-| <a name="output_public_ip"></a> [public\_ip](#output\_public\_ip) | The public IP address assigned to the instance, if applicable. NOTE: If you are using an aws\_eip with your instance, you should refer to the EIP's address directly and not use `public_ip` as this field will change after the EIP is attached |
+| <a name="output_public_ip"></a> [public\_ip](#output\_public\_ip) | The public IP address assigned to the instance, if applicable. Note: If you are using an aws\_eip with your instance, you should refer to the EIP's address directly and not use `public_ip` as this field will change after the EIP is attached |
 | <a name="output_spot_bid_status"></a> [spot\_bid\_status](#output\_spot\_bid\_status) | The current bid status of the Spot Instance Request |
 | <a name="output_spot_instance_id"></a> [spot\_instance\_id](#output\_spot\_instance\_id) | The Instance ID (if any) that is currently fulfilling the Spot Instance request |
 | <a name="output_spot_request_state"></a> [spot\_request\_state](#output\_spot\_request\_state) | The current request state of the Spot Instance Request |

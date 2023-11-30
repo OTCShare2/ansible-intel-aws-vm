@@ -21,29 +21,29 @@ In this example, the tags Name, Owner and Duration are added to the EC2 instance
 
 ## Installation of `amazon_ec2_rhel_default_vpc` role
 
-### Below are ways to `How to install and use it`
+### Below are ways to install and use it:
 
-1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection 
+1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection
    from Ansible Galaxy to the default location (as a third-party collection), it is recommended to use the following command:
     ```commandline
         ansible-galaxy  collection install <intel.ansible-intel-aws-vm>
     ```
-   
-2. **Case 2:-** When user's needs can't be met with the default configuration, wants to extend/modify existing configuration and flow, They can install collection using Ansible Galaxy in user's define location
-   Use below approaches
+
+2. **Case 2:-** When user's needs cannot be met with the default configuration, wants to extend/modify existing configuration and flow, They can install collection using Ansible Galaxy in user's define location.
+   Use below approaches:
 
    1.
        ```commandline
        ansible-galaxy  collection install -p <local path> <intel.ansible-intel-aws-vm>
        ```
-       Note: collection will download collection, you can remove as per need
+       Note: collection will download collection, you can remove as per need.
 
-   2. Download source and Copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
+   2. Download source and copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
        ```commandline
        git clone https://github.com/OTCShare2/ansible-intel-aws-vm.git
        cd ansible-intel-aws-vm
        cp -r role/amazon_ec2_rhel_default_vpc /<your project path>/
-      
+
 
 
 ## Usage
@@ -126,7 +126,7 @@ Note: Above role requires `Terraform` as we are executing terraform module [terr
 | <a name="input_ec2_rhel_default_vpc_state"></a> [ec2_rhel_default_vpc\_state](#input\_auto\_major\_version\_upgrades) | It specifices ec2 state of given stage, choies: "planned", "present" ← (default), "absent" | `string` | `present` | no |
 
 
-## VM Exposed Inputs 
+## VM Exposed Inputs
 
 | Name                                                                                            | Description                       | Type     | Default                 | Required |
 |-------------------------------------------------------------------------------------------------|-----------------------------------|----------|-------------------------|:--------:|
@@ -142,7 +142,7 @@ Note: Above role requires `Terraform` as we are executing terraform module [terr
 
 
 ## VM Terraform Extended Inputs
- Below Input variables can be used to extend variables in role, Add or update variable in vars/main.yml file
+ Below input variables can be used to extend variables in role, add or update variable in vars/main.yml file
 ### Usage
 
 roles/amazon_ec2_rhel_default_vpc/vars/main.yml
@@ -164,14 +164,14 @@ roles/amazon_ec2_rhel_default_vpc/tasks/ec2_vm.yml
       availability_zone: '{{ availability_zone }}'
       key_name: '{{ keypair_name }}'
       ami: '{{ ami }}'
-      tags: 
+      tags:
         "Name": "my-test-vm-{{ random_id }}"
         "Owner": "OwnerName-{{ random_id }}"
         "Duration": "{{ duration_count_tag }}"
   register: ec2_rhel_vm_output
 ```
 
-Use `availability_zone` in playbook 
+Use `availability_zone` in playbook
 ```yaml
 ---
 - name: Run amazon_ec2_rhel_default_vpc role
