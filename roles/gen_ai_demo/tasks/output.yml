@@ -1,0 +1,35 @@
+---
+- set_fact:
+    gen_ai_demo_instance : '{{ gen_ai_demo_output.outputs }}'
+  when: gen_ai_demo_output.outputs | length > 0
+
+- name: Validating gen_ai_demo output
+  fail:
+    msg: "gen_ai_demo instance got an error"
+  when: gen_ai_demo_output.outputs | length == 0 
+
+- name: Displaying vm output
+  ansible.builtin.debug:
+    msg:
+    - "instance_id: {{ gen_ai_demo_instance.id.value }}"
+    - "instance_arn: {{ gen_ai_demo_instance.arn.value }}"
+    - "capacity_reservation_specification: {{ gen_ai_demo_instance.capacity_reservation_specification.value }}"
+    - "instance_state: {{ gen_ai_demo_instance.instance_state.value }}"
+    - "outpost_arn: {{ gen_ai_demo_instance.outpost_arn.value }}"
+    - "password_data: {{ gen_ai_demo_instance.password_data.value }}"
+    - "primary_network_interface_id: {{ gen_ai_demo_instance.primary_network_interface_id.value }}"
+    - "private_dns: {{ gen_ai_demo_instance.private_dns.value }}"
+    - "public_dns: {{ gen_ai_demo_instance.public_dns.value }}"
+    - "public_ip: {{ gen_ai_demo_instance.public_ip.value }}"
+    - "private_ip: {{ gen_ai_demo_instance.private_ip.value }}"
+    - "ipv6_addresses: {{ gen_ai_demo_instance.ipv6_addresses.value }}"
+    - "tags_all: {{ gen_ai_demo_instance.tags_all.value }}"
+    - "spot_bid_status: {{ gen_ai_demo_instance.spot_bid_status.value }}"
+    - "spot_request_state: {{ gen_ai_demo_instance.spot_request_state.value }}"
+    - "spot_instance_id: {{ gen_ai_demo_instance.spot_instance_id.value }}"
+    # - "iam_role_name: {{ gen_ai_demo_instance.iam_role_name.value }}"
+    # - "iam_role_arn: {{ gen_ai_demo_instance.iam_role_arn.value }}"
+    # - "iam_role_unique_id: {{ gen_ai_demo_instance.iam_role_unique_id.value }}"
+    # - "iam_instance_profile_arn: {{ gen_ai_demo_instance.iam_instance_profile_arn.value }}"
+    # - "iam_instance_profile_id: {{ gen_ai_demo_instance.iam_instance_profile_id.value }}"
+    # - "iam_instance_profile_unique: {{ gen_ai_demo_instance.iam_instance_profile_unique.value }}"

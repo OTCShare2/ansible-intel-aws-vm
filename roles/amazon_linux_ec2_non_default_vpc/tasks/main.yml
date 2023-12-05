@@ -1,0 +1,31 @@
+---
+# tasks file for amazon-linux-ec2-non-default-vpc
+- name: download module
+  ansible.builtin.include_tasks:
+    file: download_tf_module.yml
+  when: ec2_state == "present"    
+
+- name: Read TF state
+  ansible.builtin.include_tasks:
+    file: read_tfstate.yml
+
+- name: Generate openssh keys
+  ansible.builtin.include_tasks:
+    file: keypair.yml  
+
+- name: subnet configure
+  ansible.builtin.include_tasks:
+    file: subnet.yml
+     
+- name: ec2 configure
+  ansible.builtin.include_tasks:
+    file: ec2.yml   
+
+- name: sg configure
+  ansible.builtin.include_tasks:
+    file: sg.yml
+ 
+- name: output
+  ansible.builtin.include_tasks:
+    file: output.yml
+  when: ec2_state == "present"    

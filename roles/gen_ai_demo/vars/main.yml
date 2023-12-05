@@ -1,0 +1,47 @@
+---
+vm_tf_module_download_path: '/home/{{ansible_env.USER}}/{{role_name}}/terraform/aws_vm/'
+cloud_init_config_path: examples/gen-ai-demo/
+ansible_python_interpreter: /usr/bin/python3
+# AMI
+aws_ami_owner: 099720109477
+# aws_ami_name: name
+aws_ami_value: "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
+# virtualization_name: virtualization-type
+virtualization_value: "hvm"
+
+private_key_type: RSA
+private_key_size: 4096
+
+file_name: /home/{{ansible_env.USER}}/key_files/tfkey
+directory_keyfiles: /home/{{ansible_env.USER}}/key_files
+
+random_id_length: 5
+
+tls_privatekey_file_path: /home/{{ansible_env.USER}}/key_files/private_key.pem
+tls_publickey_file_path: /home/{{ansible_env.USER}}/key_files/public_key.pem
+
+security_group_name: ssh_security_group
+default_security_group_rules:
+  - from_port: 22
+    to_port: 22
+    proto: "tcp"
+    cidr_ip: "0.0.0.0/0"
+  - from_port: 7860
+    to_port: 7860
+    proto: "tcp"
+    cidr_ip: "0.0.0.0/0"
+  - from_port: 5000
+    to_port: 5000
+    proto: "tcp"
+    cidr_ip: "0.0.0.0/0"
+  - from_port: 5001
+    to_port: 5001
+    proto: "tcp"
+    cidr_ip: "0.0.0.0/0"
+
+# ec2_vm.yml vars
+gen_ai_demo_state: present
+instance_type: "m7i.4xlarge"
+availability_zone: "us-east-2c"
+volume_size: 100
+duration_count_tag: 2

@@ -1,0 +1,39 @@
+---
+# vars file for amazon-linux-ec2-non-default-vpc
+# optional
+ec2_tf_module_download_path: '/home/{{ansible_env.USER}}/{{role_name}}/terraform/ec2_vpc/'
+ansible_python_interpreter: /usr/bin/python3
+
+#ec2 creation
+ec2_state: present
+key_name: "TY_key"
+subnet_id: "{{ subnet_info.subnets[0].id }}"
+tags_name:   
+  Name : "my-test-vm-{{ random_id.rid.dec }}"
+  Owner : "OwnerName-{{ random_id.rid.dec }}"
+  Duration : "2"
+  
+#keypair
+private_key_type: RSA
+private_key_size: 4096  
+file_name: /home/{{ansible_env.USER}}/key_files/tfkey
+directory_keyfiles: /home/{{ansible_env.USER}}/key_files
+random_id_length: 12
+
+TLS_privatekey_file_path: /home/{{ansible_env.USER}}/key_files/private_key.pem
+TLS_publickey_file_path: /home/{{ansible_env.USER}}/key_files/public_key.pem
+
+# security_group
+security_group_name: ssh_security_group
+security_group_rules:
+  - from_port: 22
+    to_port: 22
+    proto: "tcp"
+    cidr_ip: "0.0.0.0/0"
+ 
+#network 
+vpc_id: "vpc-0bf95158fd23f4e2e"
+duration_count_tag: 2
+
+
+

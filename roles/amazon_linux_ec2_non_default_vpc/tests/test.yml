@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - amazon-linux-ec2-non-default-vpc

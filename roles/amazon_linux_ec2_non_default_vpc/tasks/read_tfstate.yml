@@ -1,0 +1,55 @@
+- name: Read terraform output
+  command: chdir='{{ ec2_tf_module_download_path }}' terraform output -json
+  register: ec2_output
+
+- debug:
+    var: ec2_output
+
+- set_fact:
+    ec2_output: "{{ ec2_output.stdout }}"
+
+- debug:
+    var: ec2_output
+
+- block:
+    - name: "Checking resource for deletion"
+      debug:
+        msg: "Terraform cannot delete the resource because it is not found in the state file. Manual intervention is required."
+    - meta: end_play
+  when: ec2_state == 'absent' and ec2_output | length == 0
+
+- set_fact:
+    instance_id: "{{ ec2_output.id.value }}"
+    tags: "{{ ec2_output.tags_all.value }}"
+  when: ec2_output | length > 0
+
+- set_fact:
+    random_id: "{{ tags.Name.split('-')[-1] }}"
+  when: tags | length > 0
+
+- amazon.aws.ec2_instance_info:
+    instance_ids: "{{ instance_id }}"
+  register: ec2_info
+  when: instance_id | length > 0
+
+- debug:
+    var: ec2_info
+
+- set_fact:
+    ec2_instance: "{{ ec2_info.instances[0] }}"
+  when: ec2_info.instances is defined
+
+- set_fact:
+    keypair_name: "{{ ec2_instance['key_name'] }}"
+    ami_id: "{{ ec2_instance['image_id'] }}"
+  when: ec2_instance | length > 0
+
+- set_fact:
+    ec2_update: true
+  when: ec2_state == 'present' and ec2_instance | length > 0  
+
+- ansible.builtin.debug:
+    msg:
+    - "instance_id: {{ instance_id }}"
+    - "random_id: {{ random_id }}"
+    - "keypair_name: {{ keypair_name }}"
