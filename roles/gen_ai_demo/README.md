@@ -4,7 +4,7 @@
 
 # Intel® Optimized Cloud Modules for Ansible
 
-© Copyright 2022, Intel Corporation
+© Copyright 2024, Intel Corporation
 
 ## AWS M7i EC2 Instance with 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) & Intel® Cloud Optimized Recipe for FastChat and Stable Diffusion
 
@@ -31,9 +31,9 @@ This demo will showcase Large Language Model(LLM) CPU inference using 4th Gen Xe
 
    2. Download source and copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
        ```commandline
-       git clone https://github.com/OTCShare2/ansible-intel-aws-vm.git
+       git clone https://github.com/intel/ansible-intel-aws-vm.git
        cd ansible-intel-aws-vm
-       cp -r role/gen_ai_demo /<your project path>/
+       cp -r role/gen_ai_demo/<your project path>/
 
 
 ## Usage

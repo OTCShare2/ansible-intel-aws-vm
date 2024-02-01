@@ -23,5 +23,5 @@ security_group_rules:
 
 # ec2_vm.yml vars
 ec2_rhel_default_vpc_state: present
-ami: "ami-0931978297f275f71"
+ami: "ami-0c41531b8d18cc72b"
 duration_count_tag: 2

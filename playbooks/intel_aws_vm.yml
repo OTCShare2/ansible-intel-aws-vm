@@ -22,7 +22,7 @@
         # for additional variables
         # https://github.com/intel/terraform-intel-aws-vm/blob/main/variables.tf
         variables:
-          name: main-playbook-test
+          name: aws_instance_test
       register: vm_output
 
     - debug:

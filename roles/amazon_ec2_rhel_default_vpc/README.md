@@ -4,7 +4,7 @@
 
 # Intel® Optimized Cloud Modules for Ansible
 
-© Copyright 2022, Intel Corporation
+© Copyright 2024, Intel Corporation
 
 ## Ansible Intel AWS VM - Red Hat RHEL VM in Default VPC
 
@@ -40,7 +40,7 @@ In this example, the tags Name, Owner and Duration are added to the EC2 instance
 
    2. Download source and copy role directory to your Ansible boilerplate  from GitHub (Used to extended behavior of role)  
        ```commandline
-       git clone https://github.com/OTCShare2/ansible-intel-aws-vm.git
+       git clone https://github.com/intel/ansible-intel-aws-vm.git
        cd ansible-intel-aws-vm
        cp -r role/amazon_ec2_rhel_default_vpc /<your project path>/
 

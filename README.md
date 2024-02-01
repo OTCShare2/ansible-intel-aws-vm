@@ -4,13 +4,13 @@
 
 # Intel® Optimized Cloud Modules for Ansible
 
-© Copyright 2023, Intel Corporation
+© Copyright 2024, Intel Corporation
 
 ## AWS VM module
 
-Configuration in this directory creates an AWS VM (EC2 Instance).   The instance is created on an 3rd Generation Intel® Xeon® Scalable Processor (IceLake) by default.  
+Configuration in this directory creates an AWS VM (EC2 Instance).   The instance is created on an 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) by default.  
 
-### Explained Ansible AWS VM collection
+### Explanation of this Ansible "AWS VM" collection
 This collection included 3 roles and 4 playbooks.
 
 **Role**:- Ansible roles are a way to reuse and organize your Ansible code. They are self-contained units that contain all the files and configuration needed to automate a specific task.
@@ -23,8 +23,8 @@ For this module, there are 3 roles.
 2. <a name="amazon_linux_ec2_non_default_vpc"> amazon_linux_ec2_non_default_vpc</a> creates an AWS EC2 instance on 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) on Linux Operating System in a non-default VPC
 3. <a name="gen_ai_demo"> gen_ai_demo</a> It creates an Amazon M7i EC2 Instance with 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) & Intel® Cloud Optimized Recipe for FastChat and Stable Diffusion
 
-**
-****Playbook**:- An Ansible playbook is a YAML file that describes the tasks, are composed of a series of plays, which are groups of tasks that are executed in a specific order. Each play defines a set of tasks that should be executed on a specific group of hosts.
+
+**Playbook**: An Ansible playbook is a YAML file that describes the tasks, are composed of a series of plays, which are groups of tasks that are executed in a specific order. Each play defines a set of tasks that should be executed on a specific group of hosts.
          Playbooks can also include variables, which can be used to store data that is used by the tasks. This makes it easy to reuse playbooks for different environments and configurations.
          for this module.
 For this module, there are 4 playbooks:
@@ -33,7 +33,7 @@ For this module, there are 4 playbooks:
 3. Playbook **intel_aws_vm_linux_ec2_non_default_vpc.yml** - It executes role called [amazon_linux_ec2_non_default_vpc](#amazon_linux_ec2_non_default_vpc)
 4. Playbook **intel_aws_vm_gen_ai_demo** - It executes role called [gen_ai_demo](#gen_ai_demo)
 
-## TODO 
+## Code Structure 
 ```bash
 .
 ├── CODE_OF_CONDUCT.md
@@ -128,10 +128,10 @@ For this module, there are 4 playbooks:
 
 ### Below are ways to install and use it:
 
-1. **Case 1:-** When user's needs can be met with the default configuration, and they want to install a collection
+1. **Case 1:** When user's needs can be met with the default configuration, and they want to install a collection
    from Ansible Galaxy to the default location (as a third-party collection), it is recommended to use the following command:
     ```commandline
-        ansible-galaxy  collection install <intel.ansible-intel-aws-vm>
+        ansible-galaxy collection install <intel.ansible-intel-aws-vm>
     ```
 
 2. **Case 2:-** When user's needs cannot be met with the default configuration, wants to extend/modify existing configuration and flow, they can install collection using Ansible Galaxy in user's define location.
@@ -139,16 +139,17 @@ For this module, there are 4 playbooks:
 
    1.
        ```commandline
-       ansible-galaxy  collection install -p <local path> <intel.ansible-intel-aws-vm>
+       ansible-galaxy collection install -p <local path> <intel.ansible-intel-aws-vm>
        ```
        Note: collection will download collection, you can remove as per need.
 
    2. Download source and copy role directory to your Ansible boilerplate  from GitHub (used to extended behavior of role)  
        ```commandline
-       git clone https://github.com/OTCShare2/ansible-intel-aws-vm.git
+       git clone https://github.com/intel/ansible-intel-aws-vm.git
        cd ansible-intel-aws-vm
        cp -r role/amazon_ec2_rhel_default_vpc /<your project path>/
        ```
+        (Example: /home/user/.ansible/roles)
 
 ## Authenticate AWS
 To authenticate AWS API, user needs to export below environment variable:
@@ -193,12 +194,27 @@ Use [playbook](playbooks/intel_aws_vm.yml) to execute Terraform module [terrafor
     - debug:
         var: vm_output
 ```
-Use below Command:
+### Update the variables
+  Each of the playbooks have .yml files that you will need to update to insert items like VPC ID, and database settings
+
+### Execution
+ansible-playbook <playbookname.yml>
+
+EXAMPLE
 ```commandline
-ansible-playbook intel_aws_vm.yml
+ansible-playbook intel_aws_mysql.yml
 ```
 
+### Deployment Time
+Deployment time can vary but in most cases it takes approximately 15-20 minutes for the RDS database to be created or destroyed.
+
 ## Run Ansible with Different State
+You can deploy ansible in various states, similar to Terraform.  These are used as variables in the "state" section of the code.  There are 3 types, planned, present, absent.<br>
+
+**planned** = will display what will be executed by does not deploy<br>
+**present** = deploys the resources<br>
+**absent** = destroys what was created using the present setting<br>
+
 #### State - planned (terraform plan)
 ```yaml
 - name: AWS VM Module
@@ -245,9 +261,9 @@ ansible-playbook intel_aws_vm.yml
 
 | Role Name                                                                                                                              |
 |----------------------------------------------------------------------------------------------------------------------------------------|
-| [amazon_ec2_rhel_default_vpc](https://github.com/OTCShare2/ansible-intel-aws-vm/tree/main/roles/amazon_ec2_rhel_default_vpc)           |
-| [amazon_linux_ec2_non_default_vpc](https://github.com/OTCShare2/ansible-intel-aws-vm/tree/main/roles/amazon_linux_ec2_non_default_vpc) |
-| [gen_ai_demo](https://github.com/OTCShare2/ansible-intel-aws-vm/tree/main/roles/gen_ai_demo)                                           |
+| [amazon_ec2_rhel_default_vpc](https://github.com/intel/ansible-intel-aws-vm/tree/main/roles/amazon_ec2_rhel_default_vpc)           |
+| [amazon_linux_ec2_non_default_vpc](https://github.com/intel/ansible-intel-aws-vm/tree/main/roles/amazon_linux_ec2_non_default_vpc) |
+| [gen_ai_demo](https://github.com/intel/ansible-intel-aws-vm/tree/main/roles/gen_ai_demo)                                           |
 
 
 Requirements
