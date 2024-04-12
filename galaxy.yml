@@ -3,10 +3,10 @@ name: ansible_intel_aws_vm
 version: 1.0.0
 readme: README.md
 authors:
-  - Akhil D <akhil.d@intel.com>
+  - optimized-cloud-modules@intel.com
 description: This module will create new Amazon virtual machine, The instance is pre-configured with parameters.
 tags:
   - ansible
   - aws
   - vm
-repository: 'https://github.com/OTCShare2/ansible-intel-aws-vm'
+repository: 'https://github.com/intel/ansible-intel-aws-vm'
