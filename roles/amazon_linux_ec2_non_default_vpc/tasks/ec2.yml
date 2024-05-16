@@ -4,6 +4,7 @@
     project_path: '{{ ec2_tf_module_download_path }}'
     state: '{{ ec2_state }}'
     force_init: true 
+    provider_upgrade: true
     complex_vars: true 
     variables:
       key_name: '{{ keypair_name }}'
