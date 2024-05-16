@@ -18,6 +18,7 @@
         project_path: '{{ terraform_module_download_path }}'
         state: present
         force_init: true
+        provider_upgrade: true
         complex_vars: true
         # for additional variables
         # https://github.com/intel/terraform-intel-aws-vm/blob/main/variables.tf
