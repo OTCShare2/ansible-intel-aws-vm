@@ -11,6 +11,7 @@
 Configuration in this directory creates an AWS VM (EC2 Instance).   The instance is created on an 4th Generation Intel® Xeon® Scalable Processor (Sapphire Rapids) by default.  
 
 
+
 ### Explanation of this Ansible "AWS VM" collection
 This collection included 3 roles and 4 playbooks.
 
